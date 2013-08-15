@@ -30,6 +30,7 @@ function create_photo_element_li(thumb, photo, title, coords) {
     var ih = 0;
     var or = "s";
     var psize = PHOTO_SIZE;
+    var geotag = "";
 
     li.setAttribute("class", "photo-thumb-li");
     var link = document.createElement("a");
@@ -46,6 +47,10 @@ function create_photo_element_li(thumb, photo, title, coords) {
 
     link.setAttribute("href", img_scaled_url(photo.url, or, psize));
     link.setAttribute("title", title + " (loc: " + coords[0] + "," + coords[1] + ")");
+    if (typeof coords[0] != "undefined") {
+	geotag = "*"
+    }
+    link.setAttribute("title", title + " " + geotag);
     var img = document.createElement("img");
     url = thumb.url;;
     if (thumb.width < THUMB_HSIZE) {
@@ -114,7 +119,10 @@ function load_photo_album(userid, albumid, authkey, bbox, thumbsize) {
                 // Call the layout function.
                 handler.wookmark(options);
 
-                $j("#tiles a").slimbox();
+		// Init lightbox
+		$j('a', handler).colorbox({
+		    rel: 'lightbox'
+		});
 
             });
 
